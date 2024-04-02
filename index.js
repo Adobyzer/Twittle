@@ -13,10 +13,48 @@ document.addEventListener("click",function(e){
     if(e.target.dataset.like){
         handleClickLike(e.target.dataset.like)
     }
+
+    //listen to click on retweet button with handle function passing uuid as arg
+    if(e.target.dataset.retweet){
+        handleClickRetweet(e.target.dataset.retweet)
+    }
 })
 
+// render click like logic with not operator and filter array method 
 function handleClickLike(tweetId){
-    console.log(tweetId)
+    const targetTweetObj = tweetsData.filter(function(tweet){
+        return tweet.uuid === tweetId
+    })[0]
+
+    if (targetTweetObj.isLiked){
+        targetTweetObj.likes--
+    }
+    
+    else{
+        targetTweetObj.likes++ 
+    }
+
+    targetTweetObj.isLiked = !targetTweetObj.isLiked
+    render()
+}
+
+// render click retweet logic with not operator and filter array method 
+function handleClickRetweet(retweetId){
+    const targetRetweetObj = tweetsData.filter(function(retweet){
+        return retweet.uuid === retweetId
+    })[0]
+    
+        if(targetRetweetObj.isRetweeted){
+            targetRetweetObj.retweets--
+        }
+    
+        else{
+            targetRetweetObj.retweets++
+        }
+    
+    targetRetweetObj.isRetweeted = !targetRetweetObj.isRetweeted
+    
+    render()
 }
 
 

@@ -1,12 +1,17 @@
 import { tweetsData } from './data.js'
-const tweetInput = document.getElementById('tweet-input')
-const tweetBtn = document.getElementById('tweet-btn')
+// add the uuid js library to get random UUID for tweets
+import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
-tweetBtn.addEventListener('click', function(){
-    alert(tweetInput.value)
+
+let anchor = document.querySelector("a")
+
+
+anchor.addEventListener("click",function(){
+    changeUser()
 })
+//this part for double click better UX 
 
-document.addEventListener("click",function(e){
+document.addEventListener("dblclick",function(e){
 
     //listen to click on like button with handle function passing uuid as arg
 
@@ -15,8 +20,24 @@ document.addEventListener("click",function(e){
     }
 
     //listen to click on retweet button with handle function passing uuid as arg
-    if(e.target.dataset.retweet){
+    else if(e.target.dataset.retweet){
         handleClickRetweet(e.target.dataset.retweet)
+    }
+})
+
+// separation of concern this for single click only model minding
+
+document.addEventListener("click",function(e){
+
+    //listen to click on  reply
+
+     if(e.target.dataset.reply){
+        handleReplyClick(e.target.dataset.reply)
+    }
+
+    //finally on the main button of the app
+    else if(e.target.id === 'tweet-btn'){
+        handleTweetBtnClick()
     }
 })
 
@@ -57,38 +78,124 @@ function handleClickRetweet(retweetId){
     render()
 }
 
+function handleReplyClick(replyId){
+    document.getElementById(`replies-${replyId}`).classList.toggle('hidden')
+}
+
+function handleTweetBtnClick(){
+    const tweetInput = document.getElementById('tweet-input')
+
+    if(tweetInput.value){
+        tweetsData.unshift({
+            handle: `@Captain`,
+            profilePic: `images/captain.png`,
+            likes: 0,
+            retweets: 0,
+            tweetText: tweetInput.value,
+            replies: [],
+            isLiked: false,
+            isRetweeted: false,
+            uuid: uuidv4()
+        })
+    render()
+    tweetInput.value = ''
+    }
+
+}
+
+function changeUser(){
+    let div = `<div>
+    <h1> Select a picture </h1>
+
+    <input type="file">
+
+    <h2> Enter a dope username to start twittle </h2>
+
+    <input type="text">
+
+    <button> MAGIC CHANGE !</button>
+
+
+    </div>`
+
+    
+
+document.getElementById('modal').classList.toggle("hidden")
+
+
+document.querySelector("main").classList.toggle("hidden")
+
+    document.getElementById('modal').innerHTML = div
+}
+
 
 function getFeedHtml(){
-    let feedHtml = ``
+    let feedHtml = ""
 
 
     /* loop in each  generated tweet and add uuid for source identificator */
+
+    
     tweetsData.forEach(function(tweet){
+
+        let likeIconClass = ""
+        let retweetIconClass = ""
+        
+        if(tweet.isLiked){
+            likeIconClass = "liked"
+        }
+        
+         if(tweet.isRetweeted){
+            retweetIconClass = "retweeted"
+        }
+
+        let repliesHtml = ''
+        
+        if(tweet.replies.length > 0){
+            tweet.replies.forEach(function(reply){
+                repliesHtml+=`
+                <div class="tweet-reply">
+                    <div class="tweet-inner">
+                        <img src="${reply.profilePic}" class="profile-pic">
+                            <div>
+                                <p class="handle">${reply.handle}</p>
+                                <p class="tweet-text">${reply.tweetText}</p>
+                            </div>
+                        </div>
+                </div>
+                `
+            })
+        }
+
+
         feedHtml += `
-<div class="tweet">
-    <div class="tweet-inner">
-        <img src="${tweet.profilePic}" class="profile-pic">
-        <div>
-            <p class="handle">${tweet.handle}</p>
-            <p class="tweet-text">${tweet.tweetText}</p>
-            <div class="tweet-details">
-                <span class="tweet-detail">
-                    <i class="fa-regular fa-comment-dots" data-reply="${tweet.uuid}"></i>
-                    ${tweet.replies.length}
-                </span>
-                <span class="tweet-detail">
-                    <i class="fa-solid fa-heart" data-like="${tweet.uuid}"></i>
-                    ${tweet.likes}
-                </span>
-                <span class="tweet-detail">
-                    <i class="fa-solid fa-retweet" data-retweet="${tweet.uuid}"></i>
-                    ${tweet.retweets}
-                </span>
-            </div>   
-        </div>            
-    </div>
-</div>
-`
+                <div class="tweet">
+                    <div class="tweet-inner">
+                        <img src="${tweet.profilePic}" class="profile-pic">
+                        <div>
+                            <p class="handle">${tweet.handle}</p>
+                            <p class="tweet-text">${tweet.tweetText}</p>
+                            <div class="tweet-details">
+                                <span class="tweet-detail">
+                                    <i class="fa-regular fa-comment-dots" data-reply="${tweet.uuid}"></i>
+                                    ${tweet.replies.length}
+                                </span>
+                                <span class="tweet-detail">
+                                    <i class="fa-solid fa-heart ${likeIconClass}" data-like="${tweet.uuid}"></i>
+                                    ${tweet.likes}
+                                </span>
+                                <span class="tweet-detail">
+                                    <i class="fa-solid fa-retweet ${retweetIconClass}" data-retweet="${tweet.uuid}"></i>
+                                    ${tweet.retweets}
+                                </span>
+                            </div>   
+                        </div>            
+                    </div>
+                    <div class="hidden" id="replies-${tweet.uuid}">
+                        ${repliesHtml}
+                    </div>  
+                </div>
+                `
    })
    return feedHtml 
 }

@@ -6,7 +6,7 @@ html, body {
 
 /* typography and icons */
 
-h1{
+.h1{
     color: #0F8CDF;
     margin-bottom: 10px;
     font-size: 20px;
@@ -37,8 +37,14 @@ main, header{
 }
 
 header{
+    display : flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     padding-bottom: 25px;
 }
+
+
 
 .tweet-input-area {
     display: flex;
@@ -70,6 +76,45 @@ button{
     font-size: 20px;
     font-weight: 600;
 }
+
+a{
+    background-color: #14171A;
+    border: none;
+    color: white;
+    padding: 5px 19px;
+    margin-top : -10px;
+    border-radius: 20px;
+    width: 30%; 
+    cursor: pointer;
+    font-size: 12px;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+a:hover{
+    background-color: #0F8CDF;
+    border: none;
+    color: white;
+    padding: 5px 19px;
+    margin-top : -10px;
+    border-radius: 20px;
+    width: 30%; 
+    cursor: pointer;
+    font-size: 12px;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+
+.modal-change-user{
+    margin : 0 auto;
+    background-color: #1DA1F2;
+    border-radius : 5px;
+    box-shadow: 10px 5px 5px #000000;
+    height : 75%;
+    width : 24%;
+}
+
 
 /* tweet */
 
@@ -129,4 +174,8 @@ button{
 /* utility */
 .hidden{
     display: none;
+}
+
+.connect{
+    margin-top : -5px;
 }

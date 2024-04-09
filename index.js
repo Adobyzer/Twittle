@@ -137,17 +137,12 @@ function getFeedHtml(){
 
     
     tweetsData.forEach(function(tweet){
+    
+        //add ternarys operations for better refractor 
+        const likeIconClass = tweet.isLiked ? 'liked': ''
+        
 
-        let likeIconClass = ""
-        let retweetIconClass = ""
-        
-        if(tweet.isLiked){
-            likeIconClass = "liked"
-        }
-        
-         if(tweet.isRetweeted){
-            retweetIconClass = "retweeted"
-        }
+        const retweetIconClass = tweet.isRetweeted ? 'retweeted': ''
 
         let repliesHtml = ''
         
@@ -201,6 +196,7 @@ function getFeedHtml(){
 }
 
 /* render data from data.js */
+
 function render(){
     document.getElementById('feed').innerHTML = getFeedHtml()
 }

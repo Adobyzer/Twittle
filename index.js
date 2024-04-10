@@ -3,6 +3,7 @@ import { tweetsData } from './data.js'
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
 
+
 let anchor = document.querySelector("a")
 
 
@@ -85,48 +86,174 @@ function handleReplyClick(replyId){
 function handleTweetBtnClick(){
     const tweetInput = document.getElementById('tweet-input')
 
+    let userInfo = passInfoUser()
+
+    console.log(userInfo)
+    //if user write something eventually on text field
     if(tweetInput.value){
-        tweetsData.unshift({
-            handle: `@Captain`,
-            profilePic: `images/captain.png`,
-            likes: 0,
-            retweets: 0,
-            tweetText: tweetInput.value,
-            replies: [],
-            isLiked: false,
-            isRetweeted: false,
-            uuid: uuidv4()
-        })
-    render()
-    tweetInput.value = ''
+
+        console.log(userInfo)
+        if(userInfo)
+        {
+
+            tweetsData.unshift({
+                handle: `${userInfo[1]}`,
+                profilePic: `images/${userInfo[0]}`,
+                likes: 0,
+                retweets: 0,
+                tweetText: tweetInput.value,
+                replies: [],
+                isLiked: false,
+                isRetweeted: false,
+                uuid: uuidv4()
+            })
+        render()
+        tweetInput.value = ''
+
+        
+        }
+        
+        else{
+
+            tweetsData.unshift({
+                handle: `@Boss`,
+                profilePic: `images/captain.png`,
+                likes: 0,
+                retweets: 0,
+                tweetText: tweetInput.value,
+                replies: [],
+                isLiked: false,
+                isRetweeted: false,
+                uuid: uuidv4()
+            })
+        render()
+        tweetInput.value = ''
+            }
+
     }
 
 }
 
+    
 function changeUser(){
-    let div = `<div>
-    <h1> Select a picture </h1>
+    let div = 
+    
+    `<div>
+    <h1> Select a picture * </h1>
 
-    <input type="file">
+    <input type="file" id = "input">
 
     <h2> Enter a dope username to start twittle </h2>
 
-    <input type="text">
+    <input type="text" id="textfield">
 
-    <button> MAGIC CHANGE !</button>
-
+    <button id="btn-change"> MAGIC CHANGE !</button>
 
     </div>`
 
     
+    //make it visisble (toggle the switch)
+    document.getElementById('modal').classList.toggle("hidden")
 
-document.getElementById('modal').classList.toggle("hidden")
 
-
-document.querySelector("main").classList.toggle("hidden")
+    document.querySelector("main").classList.toggle("hidden")
 
     document.getElementById('modal').innerHTML = div
+
+    const btnMagic = document.getElementById("btn-change")
+
+    btnMagic.addEventListener("click", handleClickMagicButton)
 }
+
+function passInfoUser(){
+
+
+    let arr = []
+
+    //get file image and name to change it dynamically
+
+    const selectedFile = document.getElementById("input").files[0].name;
+
+
+    //if user entered a file
+    if(selectedFile){
+
+        const pseudo = document.getElementById("textfield").value
+
+        arr.push(selectedFile)
+
+        arr.push(pseudo)
+
+        //change the image dynamically
+
+        const imgAvatar = document.getElementById('img-avatar')
+
+        imgAvatar.src = `./images/${selectedFile}`
+
+        return arr
+
+    }
+
+    else{
+
+        alert("Upload a image first !!")
+
+        return null
+    }
+
+}
+
+
+function handleClickMagicButton(){
+
+    
+    let arr = []
+
+     //get file image and name to change it dynamically
+
+     const selectedFile = document.getElementById("input").files[0].name;
+
+
+     //if user entered a file
+     if(selectedFile){
+
+         const pseudo = document.getElementById("textfield").value
+
+         arr.push(selectedFile)
+
+         arr.push(pseudo)
+         
+         //close the modal
+ 
+ 
+         document.getElementById('modal').classList.toggle("hidden")
+ 
+         document.querySelector("main").classList.toggle("hidden")
+
+         //change the image dynamically
+
+         const imgAvatar = document.getElementById('img-avatar')
+
+         imgAvatar.src = `./images/${selectedFile}`
+
+         return arr
+
+     }
+
+     else{
+
+         alert("Upload a image first !!")
+
+         return null
+     }
+
+    
+}
+
+
+
+
+
 
 
 function getFeedHtml(){
@@ -194,6 +321,8 @@ function getFeedHtml(){
    })
    return feedHtml 
 }
+
+
 
 /* render data from data.js */
 

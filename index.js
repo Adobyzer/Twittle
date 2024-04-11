@@ -2,7 +2,7 @@ import { tweetsData } from './data.js'
 // add the uuid js library to get random UUID for tweets
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
-
+let arr = []
 
 let anchor = document.querySelector("a")
 
@@ -86,19 +86,15 @@ function handleReplyClick(replyId){
 function handleTweetBtnClick(){
     const tweetInput = document.getElementById('tweet-input')
 
-    let userInfo = passInfoUser()
-
-    console.log(userInfo)
     //if user write something eventually on text field
     if(tweetInput.value){
 
-        console.log(userInfo)
-        if(userInfo)
-        {
+        
+        if(arr.length != 0){
 
             tweetsData.unshift({
-                handle: `${userInfo[1]}`,
-                profilePic: `images/${userInfo[0]}`,
+                handle: `${arr[1]}`,
+                profilePic: `images/${arr[0]}`,
                 likes: 0,
                 retweets: 0,
                 tweetText: tweetInput.value,
@@ -107,13 +103,10 @@ function handleTweetBtnClick(){
                 isRetweeted: false,
                 uuid: uuidv4()
             })
-        render()
-        tweetInput.value = ''
-
         
         }
         
-        else{
+        else {
 
             tweetsData.unshift({
                 handle: `@Boss`,
@@ -126,9 +119,11 @@ function handleTweetBtnClick(){
                 isRetweeted: false,
                 uuid: uuidv4()
             })
+        
+        }
+
         render()
         tweetInput.value = ''
-            }
 
     }
 
@@ -165,53 +160,13 @@ function changeUser(){
     btnMagic.addEventListener("click", handleClickMagicButton)
 }
 
-function passInfoUser(){
-
-
-    let arr = []
-
-    //get file image and name to change it dynamically
-
-    const selectedFile = document.getElementById("input").files[0].name;
-
-
-    //if user entered a file
-    if(selectedFile){
-
-        const pseudo = document.getElementById("textfield").value
-
-        arr.push(selectedFile)
-
-        arr.push(pseudo)
-
-        //change the image dynamically
-
-        const imgAvatar = document.getElementById('img-avatar')
-
-        imgAvatar.src = `./images/${selectedFile}`
-
-        return arr
-
-    }
-
-    else{
-
-        alert("Upload a image first !!")
-
-        return null
-    }
-
-}
-
 
 function handleClickMagicButton(){
 
-    
-    let arr = []
 
      //get file image and name to change it dynamically
 
-     const selectedFile = document.getElementById("input").files[0].name;
+     const selectedFile = document.getElementById("input").files[0];
 
 
      //if user entered a file
@@ -219,13 +174,12 @@ function handleClickMagicButton(){
 
          const pseudo = document.getElementById("textfield").value
 
-         arr.push(selectedFile)
+         arr.push(selectedFile.name)
 
          arr.push(pseudo)
          
          //close the modal
- 
- 
+
          document.getElementById('modal').classList.toggle("hidden")
  
          document.querySelector("main").classList.toggle("hidden")
@@ -234,7 +188,7 @@ function handleClickMagicButton(){
 
          const imgAvatar = document.getElementById('img-avatar')
 
-         imgAvatar.src = `./images/${selectedFile}`
+         imgAvatar.src = `./images/${selectedFile.name}`
 
          return arr
 
@@ -244,16 +198,11 @@ function handleClickMagicButton(){
 
          alert("Upload a image first !!")
 
-         return null
+         return ["Boss","Captain"]
      }
 
     
 }
-
-
-
-
-
 
 
 function getFeedHtml(){

@@ -42,12 +42,12 @@ export const tweetsData = [
         replies: [
             {
                 handle: `@StackOverflower ☣️`,
-                profilePic: `images/overflow.png`,
+                profilePic: `images/han.png`,
                 tweetText: `No. Onviosuly not. Go get a job in McDonald's.`,
             },
             {
                 handle: `@YummyCoder64`,
-                profilePic: `images/love.png`,
+                profilePic: `images/elon.jpg`,
                 tweetText: `You are wonderful just as you are! ❤️`,
             },
         ],

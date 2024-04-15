@@ -133,7 +133,7 @@ function handleTweetBtnClick(){
 function changeUser(){
     let div = 
     
-    `<div>
+    `<div class="modal">
     <h1> Select a picture * </h1>
 
     <input type="file" id = "input">
@@ -149,7 +149,6 @@ function changeUser(){
     
     //make it visisble (toggle the switch)
     document.getElementById('modal').classList.toggle("hidden")
-
 
     document.querySelector("main").classList.toggle("hidden")
 

@@ -179,3 +179,7 @@ a:hover{
 .connect{
     margin-top : -5px;
 }
+
+div .modal{
+    background-color: pink;
+}
